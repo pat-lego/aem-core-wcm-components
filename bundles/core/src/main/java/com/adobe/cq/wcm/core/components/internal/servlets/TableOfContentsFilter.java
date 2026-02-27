@@ -120,11 +120,13 @@ public class TableOfContentsFilter implements Filter {
         }
 
         SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) request;
-        String path = slingRequest.getResource().getPath();
-        if (path.startsWith("/content/experience-fragments")) {
-            LOGGER.debug("{} not enabled for experience fragments, bypassing it", TableOfContentsFilter.class.getName());
-            chain.doFilter(request, response);
-            return;
+        if (slingRequest.getResource() != null) {
+            String path = slingRequest.getResource().getPath();
+            if (path.startsWith("/content/experience-fragments")) {
+                LOGGER.debug("{} not enabled for experience fragments, bypassing it", TableOfContentsFilter.class.getName());
+                chain.doFilter(request, response);
+                return;
+            }
         }
 
         CharResponseWrapper responseWrapper = new CharResponseWrapper((HttpServletResponse) response);
